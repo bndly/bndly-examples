@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <artifactId>org.bndly.examples.parent</artifactId>
+        <groupId>org.bndly.examples</groupId>
+        <version>${revision}${changelist}</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>org.bndly.examples.bndly-rest-hateoas-example</artifactId>
+    <packaging>bundle</packaging>
+    <name>Bndly examples REST HATEOAS</name>
+
+    <properties>
+        <jaxb.version>2.2.1</jaxb.version>
+        <jetty.version>9.4.15.v20190215</jetty.version>
+        <org.apache.sling.feature.extension.content.version>1.0.6</org.apache.sling.feature.extension.content.version>
+        <org.apache.sling.feature.launcher.version>1.1.2</org.apache.sling.feature.launcher.version>
+        <org.apache.sling.feature.model.starter.version>12-SNAPSHOT</org.apache.sling.feature.model.starter.version>
+        <sling.home>target/launcher</sling.home>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.apache.sling</groupId>
+            <artifactId>org.apache.sling.feature.model.starter</artifactId>
+            <version>${org.apache.sling.feature.model.starter.version}</version>
+            <type>slingosgifeature</type>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.bndly.common.rest</groupId>
+            <artifactId>org.bndly.common.rest.annotations</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.bndly.common.rest</groupId>
+            <artifactId>org.bndly.common.rest.annotation-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.bndly.common.rest</groupId>
+            <artifactId>org.bndly.common.rest.api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.bndly.common.rest</groupId>
+            <artifactId>org.bndly.common.rest.beans</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.bndly.common.rest</groupId>
+            <artifactId>org.bndly.common.rest.servlet-base</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.service.component.annotations</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.service.http.whiteboard</artifactId>
+            <version>1.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.core</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-frm-resource</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <outputDirectory>target</outputDirectory>
+                    <resources>
+                        <resource>
+                            <directory>src/main/resources</directory>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.sling</groupId>
+                <artifactId>slingfeature-maven-plugin</artifactId>
+                <version>${slingfeature-maven-plugin.version}</version>
+                <extensions>true</extensions>
+                <executions>
+                    <execution>
+                        <id>aggregate-base-feature</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>aggregate-features</goal>
+                        </goals>
+                        <configuration>
+                            <aggregates>
+                                <aggregate>
+                                    <classifier>web-assembly</classifier>
+                                    <filesInclude>**/*.json</filesInclude>
+                                    <configurationOverrides>*=USE_LATEST</configurationOverrides>
+                                    <includeArtifact>
+                                        <groupId>org.apache.sling</groupId>
+                                        <artifactId>org.apache.sling.feature.model.starter</artifactId>
+                                        <version>${org.apache.sling.feature.model.starter.version}</version>
+                                        <classifier>sling12</classifier>
+                                        <type>slingosgifeature</type>
+                                    </includeArtifact>
+                                    <includeArtifact>
+                                        <groupId>org.bndly.features</groupId>
+                                        <artifactId>org.bndly.features.rest-hateoas-feature</artifactId>
+                                        <version>${bndly.features.version}</version>
+                                        <type>slingosgifeature</type>
+                                    </includeArtifact>
+                                    <artifactsOverrides>
+                                        <artifactsOverride>org.slf4j:slf4j-api:jar:LATEST</artifactsOverride>
+                                        <artifactsOverride>org.slf4j:jcl-over-slf4j:jar:LATEST</artifactsOverride>
+                                        <artifactsOverride>org.slf4j:log4j-over-slf4j:jar:LATEST</artifactsOverride>
+                                        <artifactsOverride>org.apache.sling:org.apache.sling.commons.logservice:bundle:LATEST</artifactsOverride>
+                                        <artifactsOverride>commons-fileupload:commons-fileupload:jar:LATEST</artifactsOverride>
+                                        <artifactsOverride>commons-codec:commons-codec:jar:LATEST</artifactsOverride>
+                                        <artifactsOverride>org.apache.commons:commons-lang3:jar:LATEST</artifactsOverride>
+                                        <artifactsOverride>org.apache.commons:commons-collections4:jar:LATEST</artifactsOverride>
+                                        <artifactsOverride>org.osgi:org.osgi.util.promise:jar:LATEST</artifactsOverride>
+                                        <artifactsOverride>org.apache.felix:org.apache.felix.configadmin:bundle:LATEST</artifactsOverride>
+                                        <artifactsOverride>org.apache.felix:org.apache.felix.http.jetty:bundle:LATEST</artifactsOverride>
+                                        <artifactsOverride>org.apache.felix:org.apache.felix.webconsole:bundle:LATEST</artifactsOverride>
+                                        <artifactsOverride>org.apache.felix:org.apache.felix.webconsole.plugins.memoryusage:bundle:LATEST</artifactsOverride>
+                                    </artifactsOverrides>
+                                </aggregate>
+                            </aggregates>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>attach-base-feature</id>
+                        <phase>process-test-sources</phase>
+                        <goals>
+                            <goal>attach-features</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <features>target/fm</features>
+                    <generatedFeatures>target/fm</generatedFeatures>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>${maven.bundle.plugin.version}</version>
+                <extensions>true</extensions>
+                <executions>
+                    <execution>
+                        <id>bundle-manifest</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>manifest</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+
+    </build>
+
+    <profiles>
+        <profile>
+            <id>launch</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.sling</groupId>
+                        <artifactId>slingfeature-maven-plugin</artifactId>
+                        <version>${slingfeature-maven-plugin.version}</version>
+                        <extensions>true</extensions>
+                        <executions>
+                            <execution>
+                                <id>launch-it</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>launch-features</goal>
+                                </goals>
+                                <configuration>
+                                    <homeDirectory>${sling.home}</homeDirectory>
+                                    <cacheDirectory>${sling.home}/repository</cacheDirectory>
+                                    <selection>
+                                        <includeClassifier>web-assembly</includeClassifier>
+                                    </selection>
+                                </configuration>
+                            </execution>
+                        </executions>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.apache.sling</groupId>
+                                <artifactId>org.apache.sling.feature.extension.content</artifactId>
+                                <version>${org.apache.sling.feature.extension.content.version}</version>
+                            </dependency>
+                            <dependency>
+                                <groupId>org.apache.sling</groupId>
+                                <artifactId>org.apache.sling.feature.launcher</artifactId>
+                                <version>${org.apache.sling.feature.launcher.version}</version>
+                            </dependency>
+                        </dependencies>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+</project>
