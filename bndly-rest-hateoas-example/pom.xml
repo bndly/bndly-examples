@@ -26,6 +26,7 @@
 
     <dependencies>
 
+        <!--
         <dependency>
             <groupId>org.apache.sling</groupId>
             <artifactId>org.apache.sling.feature.model.starter</artifactId>
@@ -33,6 +34,7 @@
             <type>slingosgifeature</type>
             <scope>runtime</scope>
         </dependency>
+        -->
 
         <dependency>
             <groupId>org.bndly.common.rest</groupId>
@@ -139,6 +141,7 @@
                                     <classifier>web-assembly</classifier>
                                     <filesInclude>**/*.json</filesInclude>
                                     <configurationOverrides>*=USE_LATEST</configurationOverrides>
+                                    <!--
                                     <includeArtifact>
                                         <groupId>org.apache.sling</groupId>
                                         <artifactId>org.apache.sling.feature.model.starter</artifactId>
@@ -146,6 +149,15 @@
                                         <classifier>sling12</classifier>
                                         <type>slingosgifeature</type>
                                     </includeArtifact>
+                                    -->
+                                    <includeArtifact>
+                                        <groupId>org.bndly.features</groupId>
+                                        <artifactId>sling-feature-12</artifactId>
+                                        <version>12-SNAPSHOT</version>
+                                        <classifier>sling12</classifier>
+                                        <type>slingosgifeature</type>
+                                    </includeArtifact>
+
                                     <includeArtifact>
                                         <groupId>org.bndly.features</groupId>
                                         <artifactId>org.bndly.features.rest-hateoas-feature</artifactId>

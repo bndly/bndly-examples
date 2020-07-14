@@ -8,6 +8,19 @@
     <packaging>pom</packaging>
     <name>Bnldy Examples parent</name>
 
+    <repositories>
+        <repository>
+            <id>bndly-bndly-commons</id>
+            <url>https://packagecloud.io/bndly/bndly-commons/maven2</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
