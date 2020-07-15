@@ -15,18 +15,16 @@
     <packaging>bundle</packaging>
     <name>Bndly examples REST HATEOAS</name>
 
-    <distributionManagement>
-        <repository>
-            <id>packagecloud-bndly</id>
-            <url>packagecloud+https://packagecloud.io/bndly/bndly-examples</url>
-            <layout>default</layout>
-        </repository>
-        <snapshotRepository>
-            <id>packagecloud-bndly</id>
-            <url>packagecloud+https://packagecloud.io/bndly/bndly-examples</url>
-            <layout>default</layout>
-        </snapshotRepository>
-    </distributionManagement>
+      <distributionManagement>
+    <repository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+  </distributionManagement>
 
     <properties>
         <jaxb.version>2.2.1</jaxb.version>
