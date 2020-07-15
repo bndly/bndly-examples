@@ -15,6 +15,19 @@
     <packaging>bundle</packaging>
     <name>Bndly examples REST HATEOAS</name>
 
+    <distributionManagement>
+        <repository>
+            <id>packagecloud-bndly</id>
+            <url>packagecloud+https://packagecloud.io/bndly/bndly-examples</url>
+            <layout>default</layout>
+        </repository>
+        <snapshotRepository>
+            <id>packagecloud-bndly</id>
+            <url>packagecloud+https://packagecloud.io/bndly/bndly-examples</url>
+            <layout>default</layout>
+        </snapshotRepository>
+    </distributionManagement>
+
     <properties>
         <jaxb.version>2.2.1</jaxb.version>
         <jetty.version>9.4.15.v20190215</jetty.version>
@@ -97,6 +110,14 @@
     </dependencies>
 
     <build>
+
+        <extensions>
+            <extension>
+                <groupId>io.packagecloud.maven.wagon</groupId>
+                <artifactId>maven-packagecloud-wagon</artifactId>
+                <version>0.0.6</version>
+            </extension>
+        </extensions>
 
         <plugins>
 
